@@ -36,3 +36,24 @@ export interface Update {
     message?: Message;
     callback_query?: CallbackQuery;
 }
+
+export interface ReplyKeyboardMarkup {
+    keyboard: KeyboardButton[][];
+    resize_keyboard?: boolean;
+    one_time_keyboard?: boolean;
+    persistent?: boolean;
+}
+
+export interface KeyboardButton {
+    text: string;
+}
+
+export interface InlineKeyboardMarkup {
+    inline_keyboard: InlineKeyboardButton[][];
+}
+
+export interface InlineKeyboardButton {
+    text: string;
+    callback_data?: string;
+    url?: string;
+}
