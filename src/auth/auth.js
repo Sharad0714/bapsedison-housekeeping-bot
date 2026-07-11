@@ -1,4 +1,4 @@
-import {AUTHORIZED_USERS} from "../config.js";
+import {AUTHORIZED_USERS} from "../../config.js";
 
 export function getAuthorizedUser (telegramUserId) {
 	return AUTHORIZED_USERS[ telegramUserId ] || null;

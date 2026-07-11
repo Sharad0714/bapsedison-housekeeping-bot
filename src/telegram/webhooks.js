@@ -1,5 +1,5 @@
 import {TelegramAPI} from "./api.js";
-import {getAuthorizedUser} from "../auth/auth.js";
+import {getAuthorizedUser} from "../src/auth/auth.js";
 import {logError} from "../utils/logger.js";
 import {routeUpdate} from "../services/router.js";
 
