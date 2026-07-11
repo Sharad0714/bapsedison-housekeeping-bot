@@ -14,7 +14,7 @@
 	"include": [
 		"**/*.ts",
 		"**/*.js"
-	],
+, "src/services/router.ts"	],
 	"exclude": [
 		"node_modules"
 	]
