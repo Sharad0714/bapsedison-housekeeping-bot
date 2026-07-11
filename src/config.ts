@@ -13,11 +13,13 @@ export const CHAT_TYPES = {
 	CHANNEL: "channel",
 } as const;
 
+export type ChatType = typeof CHAT_TYPES[keyof typeof CHAT_TYPES];
+
 export type UserRole = "ADMIN" | "USER";
 
 export interface AuthorizedUser {
-	name: string;
-	role: UserRole;
+	readonly name: string;
+	readonly role: UserRole;
 }
 
 export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
@@ -53,7 +55,7 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 		name: "Vipulbhai",
 		role: "USER",
 	}
-};
+} as const satisfies Record<number, AuthorizedUser>;
 
 export const LOW_STOCK_THRESHOLD = 5;
 
