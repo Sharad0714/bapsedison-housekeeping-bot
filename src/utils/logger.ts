@@ -2,14 +2,18 @@ function timestamp(): string {
 	return new Date().toISOString();
 }
 
+function format(level: "INFO" | "WARN" | "ERROR", message: string): string {
+	return `[${timestamp()}] [${level}] ${message}`;
+}
+
 export function logInfo(message: string, ...args: unknown[]): void {
-	console.log(`[${timestamp()}] [INFO] ${message}`, ...args);
+	console.log(format("INFO", message), ...args);
 }
 
 export function logWarn(message: string, ...args: unknown[]): void {
-	console.warn(`[${timestamp()}] [WARN] ${message}`, ...args);
+	console.warn(format("WARN", message), ...args);
 }
 
-export function logError(message: string, error: unknown): void {
-	console.error(`[${timestamp()}] [ERROR] ${message}`, error);
+export function logError(message: string, ...args: unknown[]): void {
+	console.error(format("ERROR", message), ...args);
 }
