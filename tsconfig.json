@@ -12,9 +12,8 @@
 		"skipLibCheck": true
 	},
 	"include": [
-		"**/*.ts",
-		"**/*.js"
-, "src/services/router.ts"	],
+		"src/**/*.ts"
+	],
 	"exclude": [
 		"node_modules"
 	]
