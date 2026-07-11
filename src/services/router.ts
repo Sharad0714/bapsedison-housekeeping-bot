@@ -2,8 +2,8 @@ import {TelegramAPI} from "../telegram/api";
 import {handleCallbackQuery} from "../handlers/callback";
 import {handleMessage} from "../handlers/message";
 import {logInfo} from "../utils/logger";
-import type {Update} from "../types/telegram";
 import type {AuthorizedUser} from "../config";
+import {Update} from "../telegram/types";
 
 export async function routeUpdate (
 	api: TelegramAPI,

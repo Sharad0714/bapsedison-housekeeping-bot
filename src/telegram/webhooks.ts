@@ -1,7 +1,6 @@
 import {isAuthorized, getAuthorizedUser} from "../auth/auth";
 import {routeUpdate} from "../services/router";
 import {TelegramAPI} from "./api";
-import type {Update} from "../types/telegram";
 
 export async function handleWebhook (
 	request: Request,

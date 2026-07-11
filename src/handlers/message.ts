@@ -1,7 +1,7 @@
 import {BUTTONS, BOT_NAME} from "../config";
 import type {AuthorizedUser} from "../config";
-import type {Message} from "../types/telegram";
 import {TelegramAPI} from "../telegram/api";
+import {Message} from "../telegram/types";
 
 export async function handleMessage (
 	api: TelegramAPI,
