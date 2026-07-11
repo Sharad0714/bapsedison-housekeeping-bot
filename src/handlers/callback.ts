@@ -1,12 +1,12 @@
-import { COMING_SOON_MESSAGE } from "../telegram/responses";
-import { TelegramAPI } from "../telegram/api";
-import type { CallbackQuery } from "../types/telegram";
-import type { AuthorizedUser } from "../config";
+import {COMING_SOON_MESSAGE} from "../telegram/responses";
+import {TelegramAPI} from "../telegram/api";
+import type {CallbackQuery} from "../types/telegram";
+import type {AuthorizedUser} from "../config";
 
-export async function handleCallbackQuery(
+export async function handleCallbackQuery (
 	api: TelegramAPI,
 	callbackQuery: CallbackQuery,
-	user: AuthorizedUser
+	_user: AuthorizedUser
 ): Promise<void> {
 	const callbackId = callbackQuery.id;
 	const data = callbackQuery.data;
@@ -29,12 +29,13 @@ export async function handleCallbackQuery(
 				messageId,
 				COMING_SOON_MESSAGE
 			);
-			break;
+			return;
 
 		default:
 			await api.answerCallbackQuery(
 				callbackId,
 				"Unknown action."
 			);
+			return;
 	}
 }
