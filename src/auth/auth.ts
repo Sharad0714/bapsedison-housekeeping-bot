@@ -1,9 +1,12 @@
-import { AUTHORIZED_USERS } from "../../config";
+import {AUTHORIZED_USERS} from "../config";
+import type {AuthorizedUser} from "../config";
 
-export function getAuthorizedUser(telegramUserId: number) {
+export function getAuthorizedUser (
+	telegramUserId: number
+): AuthorizedUser | null {
 	return AUTHORIZED_USERS[telegramUserId] ?? null;
 }
 
-export function isAuthorized(telegramUserId: number): boolean {
+export function isAuthorized (telegramUserId: number): boolean {
 	return getAuthorizedUser(telegramUserId) !== null;
 }
