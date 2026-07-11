@@ -43,7 +43,7 @@ async function handleUnknown (api, chatId) {
 	);
 }
 
-export async function handleMessage (api, message) {
+export async function handleMessage (api, message, user) {
 	const chatId = message.chat.id;
 	const text = message.text?.trim();
 

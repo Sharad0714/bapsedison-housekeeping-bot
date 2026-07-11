@@ -1,6 +1,6 @@
 import {COMING_SOON_MESSAGE} from "../telegram/responses.js";
 
-export async function handleCallbackQuery (api, callbackQuery) {
+export async function handleCallbackQuery (api, callbackQuery, user) {
 	const callbackId = callbackQuery.id;
 	const data = callbackQuery.data;
 	const message = callbackQuery.message;

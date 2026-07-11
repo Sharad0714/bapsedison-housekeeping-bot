@@ -3,7 +3,7 @@ import {handleCallbackQuery} from "../handlers/callback.js";
 import {handleMessage} from "../handlers/message.js";
 import {logInfo} from "../utils/logger.js";
 
-export async function routeUpdate (api, update) {
+export async function routeUpdate (api, update, user) {
 	if (update.message) {
 		return handleMessage(api, update.message);
 	}
