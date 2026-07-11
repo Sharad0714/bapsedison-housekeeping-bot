@@ -1,10 +1,9 @@
-import { TelegramAPI } from "./api";
-import { getAuthorizedUser } from "../src/auth/auth";
-import { logError } from "../utils/logger";
-import { routeUpdate } from "../services/router";
-import type { Update } from "../types/telegram";
+import {isAuthorized, getAuthorizedUser} from "../auth/auth";
+import {routeUpdate} from "../services/router";
+import {TelegramAPI} from "./api";
+import type {Update} from "../types/telegram";
 
-export async function handleWebhook(
+export async function handleWebhook (
 	request: Request,
 	api: TelegramAPI
 ): Promise<Response> {
@@ -14,37 +13,35 @@ export async function handleWebhook(
 		});
 	}
 
+	let update: Update;
+
 	try {
-		const update: Update = await request.json();
-
-		const telegramUserId =
-			update.message?.from?.id ??
-			update.callback_query?.from?.id;
-
-		const chatId =
-			update.message?.chat?.id ??
-			update.callback_query?.message?.chat?.id;
-
-		if (telegramUserId === undefined || chatId === undefined) {
-			return new Response("OK");
-		}
-
-		const user = getAuthorizedUser(telegramUserId);
-
-		if (!user) {
-			await api.sendMessage(
-				chatId,
-				"❌ You are not authorized to use this bot."
-			);
-			return new Response("OK");
-		}
-
-		await routeUpdate(api, update, user);
-	} catch (error) {
-		logError("Failed to process Telegram webhook.", error);
+		update = await request.json();
+	} catch {
+		return new Response("Invalid JSON", {
+			status: 400,
+		});
 	}
 
-	return new Response("OK", {
-		status: 200,
-	});
+	const telegramUser =
+		update.message?.from ??
+		update.callback_query?.from;
+
+	if (!telegramUser) {
+		return new Response("OK");
+	}
+
+	if (!isAuthorized(telegramUser.id)) {
+		return new Response("OK");
+	}
+
+	const user = getAuthorizedUser(telegramUser.id);
+
+	if (!user) {
+		return new Response("OK");
+	}
+
+	await routeUpdate(api, update, user);
+
+	return new Response("OK");
 }

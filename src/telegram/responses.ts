@@ -1,32 +1,17 @@
-import { BOT_NAME } from "../config";
+import {BOT_NAME} from "../config";
 
-export const WELCOME_MESSAGE = `
-🙏 Welcome to ${BOT_NAME}!
+export const WELCOME_MESSAGE = `Welcome to ${BOT_NAME}!
 
-Use the menu below to get started.
+Use the menu below to navigate the inventory system.`;
 
-🚧 Inventory features are currently under development.
-`.trim();
-
-export const HELP_MESSAGE = `
-Welcome!
-
-Use the buttons below to navigate the bot.
-
-📦 Inventory
-View the current inventory.
-
-📝 Update Inventory
-Update quantities for inventory items.
-
-⚙️ Manage Items
-Add, edit, or remove inventory items.
-
-More features will be added soon.
-`.trim();
+export const UNAUTHORIZED_MESSAGE =
+	"You are not authorized to use this bot.";
 
 export const UNKNOWN_COMMAND_MESSAGE =
-	"Sorry, I didn't understand that. Please use the menu below.";
+	"I didn't understand that command. Please use the menu below.";
 
 export const COMING_SOON_MESSAGE =
-	"🚧 This feature is coming soon.";
+	"This feature is coming soon.";
+
+export const INTERNAL_ERROR_MESSAGE =
+	"Something went wrong. Please try again later.";

@@ -1,42 +1,42 @@
 export class TelegramAPI {
-	private readonly baseUrl: string;
+	constructor (private readonly token: string) { }
 
-	constructor(botToken: string) {
-		this.baseUrl = `https://api.telegram.org/bot${botToken}`;
+	private get apiUrl (): string {
+		return `https://api.telegram.org/bot${this.token}`;
 	}
 
-	private async request<T = unknown>(
+	private async request<T> (
 		method: string,
-		payload: Record<string, unknown>
+		body: Record<string, unknown>
 	): Promise<T> {
-		const response = await fetch(`${this.baseUrl}/${method}`, {
+		const response = await fetch(`${this.apiUrl}/${method}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(payload),
+			body: JSON.stringify(body),
 		});
 
 		if (!response.ok) {
 			throw new Error(
-				`Telegram API request failed (${response.status} ${response.statusText})`
+				`Telegram API request failed (${response.status})`
 			);
 		}
 
-		const result: {
+		const result = await response.json() as {
 			ok: boolean;
 			result: T;
 			description?: string;
-		} = await response.json();
+		};
 
 		if (!result.ok) {
-			throw new Error(result.description ?? "Unknown Telegram API error.");
+			throw new Error(result.description ?? "Telegram API error");
 		}
 
 		return result.result;
 	}
 
-	async sendMessage(
+	async sendMessage (
 		chatId: number,
 		text: string,
 		replyMarkup?: object
@@ -48,31 +48,21 @@ export class TelegramAPI {
 		});
 	}
 
-	async editMessageText(
+	async editMessageText (
 		chatId: number,
 		messageId: number,
-		text: string
+		text: string,
+		replyMarkup?: object
 	): Promise<void> {
 		await this.request("editMessageText", {
 			chat_id: chatId,
 			message_id: messageId,
 			text,
-		});
-	}
-
-	async editMessageReplyMarkup(
-		chatId: number,
-		messageId: number,
-		replyMarkup: object
-	): Promise<void> {
-		await this.request("editMessageReplyMarkup", {
-			chat_id: chatId,
-			message_id: messageId,
 			reply_markup: replyMarkup,
 		});
 	}
 
-	async answerCallbackQuery(
+	async answerCallbackQuery (
 		callbackQueryId: string,
 		text?: string
 	): Promise<void> {
