@@ -86,7 +86,34 @@ async function sendHelpMessage (
 ): Promise<void> {
 	await api.sendMessage(
 		chatId,
-		HELP_MESSAGE,
+		getHelpMessage(user),
 		getMainMenuKeyboard(user)
 	);
+}
+
+export function getHelpMessage (user: AuthorizedUser): string {
+	const sections = [
+		"❓ Housekeeping Bot Help",
+		"",
+		"Use the buttons below to navigate the bot.",
+		"",
+		"📦 Inventory",
+		"View the current inventory.",
+		"",
+		"📝 Update Inventory",
+		"Record inventory changes.",
+		"",
+		"⚙️ Manage Items",
+		"Add, edit, or remove inventory items.",
+	];
+
+	if (user.role === "ADMIN") {
+		sections.push(
+			"",
+			"📋 Orders",
+			"View and manage supply orders."
+		);
+	}
+
+	return sections.join("\n");
 }

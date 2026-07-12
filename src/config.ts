@@ -7,22 +7,6 @@ export const BUTTONS = {
 	HELP: "❓ Help",
 } as const;
 
-export const HELP_MESSAGE = `❓ Housekeeping Bot Help
-
-Use the buttons below to navigate the bot.
-
-📦 Inventory
-View the current inventory.
-
-📝 Update Inventory
-Record inventory changes.
-
-⚙️ Manage Items
-Add, edit, or remove inventory items.
-
-📋 Orders
-View and manage supply orders.`;
-
 export const CHAT_TYPES = {
 	PRIVATE: "private",
 	GROUP: "group",
