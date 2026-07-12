@@ -1,6 +1,7 @@
 import {BOT_NAME} from "../config";
 
-export const WELCOME_MESSAGE = `Welcome to ${BOT_NAME}!
+export const WELCOME_MESSAGE = `Jay Swaminarayan, ${name}.
+Welcome to ${BOT_NAME}!
 
 Use the menu below to navigate the inventory system.`;
 
