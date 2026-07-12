@@ -41,7 +41,7 @@ export interface ReplyKeyboardMarkup {
     keyboard: KeyboardButton[][];
     resize_keyboard?: boolean;
     one_time_keyboard?: boolean;
-    persistent?: boolean;
+    is_persistent?: boolean;
 }
 
 export interface KeyboardButton {

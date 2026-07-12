@@ -1,7 +1,8 @@
 import {AuthorizedUser, BUTTONS} from "../config";
+import {ReplyKeyboardMarkup} from "./types";
 
 export function getMainMenuKeyboard (user: AuthorizedUser) {
-	const keyboard = [
+	const keyboard: ReplyKeyboardMarkup["keyboard"] = [
 		[{text: BUTTONS.INVENTORY}],
 		[{text: BUTTONS.UPDATE_INVENTORY}],
 		[{text: BUTTONS.MANAGE_ITEMS}],

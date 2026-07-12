@@ -16,6 +16,6 @@ export default {
 
 		const telegram = new TelegramAPI(env.TELEGRAM_BOT_TOKEN);
 
-		return handleWebhook(request, telegram);
+		return handleWebhook(request, telegram, env);
 	},
 } satisfies ExportedHandler<Env>;
