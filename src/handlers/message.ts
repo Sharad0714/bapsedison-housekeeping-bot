@@ -1,8 +1,9 @@
-import {BUTTONS, BOT_NAME, HELP_MESSAGE} from "../config";
+import {BUTTONS, BOT_NAME} from "../config";
 import type {AuthorizedUser} from "../config";
 import {TelegramAPI} from "../telegram/api";
 import {getMainMenuKeyboard} from "../telegram/keyboards";
 import {Message} from "../telegram/types";
+import {UNKNOWN_COMMAND_MESSAGE, WELCOME_MESSAGE} from "../telegram/responses";
 
 export async function handleMessage (
 	api: TelegramAPI,
@@ -23,26 +24,33 @@ export async function handleMessage (
 			await sendWelcomeMessage(api, chatId, user);
 			return;
 
-		case BUTTONS.INVENTORY:
+		case "/inventory":
 			await api.sendMessage(chatId, "📦 Inventory coming soon.");
 			return;
 
-		case BUTTONS.UPDATE_INVENTORY:
+		case "/update":
 			await api.sendMessage(chatId, "📝 Update Inventory coming soon.");
 			return;
 
-		case BUTTONS.MANAGE_ITEMS:
+		case "/manage":
 			await api.sendMessage(chatId, "⚙️ Manage Items coming soon.");
 			return;
 
-		case BUTTONS.HELP:
+		case "/orders":
+			if (user.role === "ADMIN") {
+				await api.sendMessage(chatId, "📋 Orders coming soon.");
+			}
+			return;
+
+		case "/help":
 			await sendHelpMessage(api, chatId, user);
 			return;
 
 		default:
 			await api.sendMessage(
 				chatId,
-				"I didn't understand that command."
+				UNKNOWN_COMMAND_MESSAGE,
+				getMainMenuKeyboard(user)
 			);
 			return;
 	}
@@ -74,7 +82,7 @@ async function sendWelcomeMessage (
 ): Promise<void> {
 	await api.sendMessage(
 		chatId,
-		`Welcome, ${user.name}!`,
+		WELCOME_MESSAGE,
 		getMainMenuKeyboard(user)
 	);
 }

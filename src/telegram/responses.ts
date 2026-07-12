@@ -5,7 +5,7 @@ export const WELCOME_MESSAGE = `Welcome to ${BOT_NAME}!
 Use the menu below to navigate the inventory system.`;
 
 export const UNAUTHORIZED_MESSAGE =
-	"You are not authorized to use this bot.";
+	"You are not authorized to use this bot. Please contact a housekeeping admin if you believe this is an error.";
 
 export const UNKNOWN_COMMAND_MESSAGE =
 	"I didn't understand that command. Please use the menu below.";

@@ -4,6 +4,7 @@ export const BUTTONS = {
 	INVENTORY: "📦 Inventory",
 	UPDATE_INVENTORY: "📝 Update Inventory",
 	MANAGE_ITEMS: "⚙️ Manage Items",
+	ORDERS: "🛒 Orders",
 	HELP: "❓ Help",
 } as const;
 
