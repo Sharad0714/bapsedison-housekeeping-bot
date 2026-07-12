@@ -3,7 +3,7 @@ import type {AuthorizedUser} from "../config";
 import {TelegramAPI} from "../telegram/api";
 import {getMainMenuKeyboard} from "../telegram/keyboards";
 import {Message} from "../telegram/types";
-import {UNKNOWN_COMMAND_MESSAGE, WELCOME_MESSAGE} from "../telegram/responses";
+import {UNKNOWN_COMMAND_MESSAGE} from "../telegram/responses";
 
 export async function handleMessage (
 	api: TelegramAPI,
@@ -82,7 +82,7 @@ async function sendWelcomeMessage (
 ): Promise<void> {
 	await api.sendMessage(
 		chatId,
-		WELCOME_MESSAGE,
+		getWelcomeMessage(user),
 		getMainMenuKeyboard(user)
 	);
 }

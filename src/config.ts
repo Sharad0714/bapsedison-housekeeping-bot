@@ -41,10 +41,10 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 		name: "Rajbhai",
 		role: "USER",
 	},
-	189953614: {
-		name: "Sharadbhai",
-		role: "USER",
-	},
+	// 189953614: {
+	// 	name: "Sharadbhai",
+	// 	role: "USER",
+	// },
 	1100272978: {
 		name: "Smitbhai",
 		role: "USER",
