@@ -1,10 +1,6 @@
 import {TelegramAPI} from "./telegram/api";
 import {handleWebhook} from "./telegram/webhooks";
 
-export interface Env {
-	TELEGRAM_BOT_TOKEN: string;
-}
-
 export default {
 	async fetch (request: Request, env: Env): Promise<Response> {
 		if (!env.TELEGRAM_BOT_TOKEN) {

@@ -2,8 +2,14 @@
 	"name": "bapsedison-housekeeping-bot",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-07-11",
-
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "bapsedison-housekeeping",
+			"database_id": "3c28e361-b09c-453e-b180-05cdaffe9e50"
+		}
+	],
 	"observability": {
-	"enabled": true
+		"enabled": true
 	}
 }

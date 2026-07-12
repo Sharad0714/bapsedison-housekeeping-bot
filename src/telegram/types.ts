@@ -1,3 +1,8 @@
+export interface Env {
+    TELEGRAM_BOT_TOKEN: string;
+    DB: D1Database;
+}
+
 export interface User {
     id: number;
     is_bot: boolean;
