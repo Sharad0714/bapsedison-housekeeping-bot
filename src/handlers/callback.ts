@@ -2,8 +2,10 @@ import {COMING_SOON_MESSAGE} from "../telegram/responses";
 import {TelegramAPI} from "../telegram/api";
 import type {AuthorizedUser} from "../config";
 import {CallbackQuery} from "../telegram/types";
+import {Env} from "..";
 
 export async function handleCallbackQuery (
+	env: Env,
 	api: TelegramAPI,
 	callbackQuery: CallbackQuery,
 	_user: AuthorizedUser

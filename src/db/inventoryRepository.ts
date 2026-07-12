@@ -1,37 +1,38 @@
-import type {Env} from "../telegram/types";
+import type {Env} from "../index";
 import type {InventoryItem} from "../models/inventory";
 
 export async function getInventory (
-    env: Env,
+	env: Env,
 ): Promise<InventoryItem[]> {
-    return env.DB
-        .prepare(`
-      SELECT
-        name,
-        quantity,
-        status
-      FROM inventory
-      ORDER BY name
-    `)
-        .all<InventoryItem>()
-        .then((result) => result.results);
+	const result = await env.DB
+		.prepare(`
+			SELECT
+				name,
+				quantity,
+				status
+			FROM inventory
+			ORDER BY name
+		`)
+		.all<InventoryItem>();
+
+	return result.results;
 }
 
 export async function getInventoryItem (
-    env: Env,
-    name: string,
+	env: Env,
+	name: string,
 ): Promise<InventoryItem | null> {
-    const result = await env.DB
-        .prepare(`
-      SELECT
-        name,
-        quantity,
-        status
-      FROM inventory
-      WHERE name = ?
-    `)
-        .bind(name)
-        .first<InventoryItem>();
+	const result = await env.DB
+		.prepare(`
+			SELECT
+				name,
+				quantity,
+				status
+			FROM inventory
+			WHERE name = ?
+		`)
+		.bind(name)
+		.first<InventoryItem>();
 
-    return result ?? null;
+	return result ?? null;
 }

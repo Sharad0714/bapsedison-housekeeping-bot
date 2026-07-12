@@ -4,8 +4,12 @@ import {TelegramAPI} from "../telegram/api";
 import {getMainMenuKeyboard} from "../telegram/keyboards";
 import {Message} from "../telegram/types";
 import {UNKNOWN_COMMAND_MESSAGE} from "../telegram/responses";
+import {Env} from "..";
+import {getInventoryView} from "../services/inventoryService";
+import {formatInventory} from "../formatters/inventoryFormatter";
 
 export async function handleMessage (
+	env: Env,
 	api: TelegramAPI,
 	message: Message,
 	user: AuthorizedUser
@@ -25,7 +29,8 @@ export async function handleMessage (
 			return;
 
 		case "/inventory":
-			await api.sendMessage(chatId, "📦 Inventory coming soon.");
+			const inventory = await getInventoryView(env);
+			await api.sendMessage(chatId, formatInventory(inventory), getMainMenuKeyboard(user));
 			return;
 
 		case "/update":
