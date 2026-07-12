@@ -1,6 +1,7 @@
-import {BUTTONS, BOT_NAME} from "../config";
+import {BUTTONS, BOT_NAME, HELP_MESSAGE} from "../config";
 import type {AuthorizedUser} from "../config";
 import {TelegramAPI} from "../telegram/api";
+import {getMainMenuKeyboard} from "../telegram/keyboards";
 import {Message} from "../telegram/types";
 
 export async function handleMessage (
@@ -15,7 +16,9 @@ export async function handleMessage (
 		return;
 	}
 
-	switch (text) {
+	const command = normalizeCommand(text);
+
+	switch (command) {
 		case "/start":
 			await sendWelcomeMessage(api, chatId, user);
 			return;
@@ -32,12 +35,35 @@ export async function handleMessage (
 			await api.sendMessage(chatId, "⚙️ Manage Items coming soon.");
 			return;
 
+		case BUTTONS.HELP:
+			await sendHelpMessage(api, chatId, user);
+			return;
+
 		default:
 			await api.sendMessage(
 				chatId,
 				"I didn't understand that command."
 			);
 			return;
+	}
+}
+
+function normalizeCommand (text: string): string {
+	switch (text) {
+		case BUTTONS.INVENTORY:
+			return "/inventory";
+
+		case BUTTONS.UPDATE_INVENTORY:
+			return "/update";
+
+		case BUTTONS.MANAGE_ITEMS:
+			return "/manage";
+
+		case BUTTONS.HELP:
+			return "/help";
+
+		default:
+			return text;
 	}
 }
 
@@ -49,14 +75,18 @@ async function sendWelcomeMessage (
 	await api.sendMessage(
 		chatId,
 		`Welcome, ${user.name}!`,
-		{
-			keyboard: [
-				[{text: BUTTONS.INVENTORY}],
-				[{text: BUTTONS.UPDATE_INVENTORY}],
-				[{text: BUTTONS.MANAGE_ITEMS}]
-			],
-			resize_keyboard: true,
-			persistent: true
-		}
+		getMainMenuKeyboard(user)
+	);
+}
+
+async function sendHelpMessage (
+	api: TelegramAPI,
+	chatId: number,
+	user: AuthorizedUser
+): Promise<void> {
+	await api.sendMessage(
+		chatId,
+		HELP_MESSAGE,
+		getMainMenuKeyboard(user)
 	);
 }

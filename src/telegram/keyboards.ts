@@ -1,29 +1,21 @@
-import {BUTTONS} from "../config";
+import {AuthorizedUser, BUTTONS} from "../config";
 
-export function getMainMenuKeyboard () {
+export function getMainMenuKeyboard (user: AuthorizedUser) {
+	const keyboard = [
+		[{text: BUTTONS.INVENTORY}],
+		[{text: BUTTONS.UPDATE_INVENTORY}],
+		[{text: BUTTONS.MANAGE_ITEMS}],
+	];
+
+	if (user.role === "ADMIN") {
+		keyboard.push([{text: BUTTONS.ORDERS}]);
+	}
+
+	keyboard.push([{text: BUTTONS.HELP}]);
+
 	return {
-		keyboard: [
-			[{text: BUTTONS.INVENTORY}],
-			[{text: BUTTONS.UPDATE_INVENTORY}],
-			[{text: BUTTONS.MANAGE_ITEMS}],
-		],
+		keyboard,
 		resize_keyboard: true,
 		is_persistent: true,
-	};
-}
-
-export function getMainMenuInlineKeyboard () {
-	return {
-		inline_keyboard: [
-			[
-				{text: BUTTONS.INVENTORY, callback_data: "inventory"},
-			],
-			[
-				{text: BUTTONS.UPDATE_INVENTORY, callback_data: "update_inventory"},
-			],
-			[
-				{text: BUTTONS.MANAGE_ITEMS, callback_data: "manage_items"},
-			],
-		],
 	};
 }
