@@ -1,8 +1,8 @@
-import {isAuthorized, getAuthorizedUser} from "../auth/auth";
+import {getAuthorizedUser} from "../auth/auth";
 import {routeUpdate} from "../services/router";
 import {TelegramAPI} from "./api";
-import {UNAUTHORIZED_MESSAGE} from "./responses";
-import {Update} from "./types";
+import {INTERNAL_ERROR_MESSAGE, UNAUTHORIZED_MESSAGE} from "./responses";
+import type {Update} from "./types";
 
 export async function handleWebhook (
 	request: Request,
@@ -36,18 +36,19 @@ export async function handleWebhook (
 		return new Response("OK");
 	}
 
-	if (!isAuthorized(telegramUser.id)) {
+	const user = getAuthorizedUser(telegramUser.id);
+
+	if (!user) {
 		await api.sendMessage(chatId, UNAUTHORIZED_MESSAGE);
 		return new Response("OK");
 	}
 
-	const user = getAuthorizedUser(telegramUser.id);
-
-	if (!user) {
-		return new Response("OK");
+	try {
+		await routeUpdate(api, update, user);
+	} catch (error) {
+		// log
+		await api.sendMessage(chatId, INTERNAL_ERROR_MESSAGE);
 	}
-
-	await routeUpdate(api, update, user);
 
 	return new Response("OK");
 }

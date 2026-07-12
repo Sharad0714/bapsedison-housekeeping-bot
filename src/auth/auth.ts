@@ -6,7 +6,3 @@ export function getAuthorizedUser (
 ): AuthorizedUser | null {
 	return AUTHORIZED_USERS[telegramUserId] ?? null;
 }
-
-export function isAuthorized (telegramUserId: number): boolean {
-	return getAuthorizedUser(telegramUserId) !== null;
-}

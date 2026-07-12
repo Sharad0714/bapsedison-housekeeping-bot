@@ -1,10 +1,5 @@
 import {BOT_NAME} from "../config";
 
-export const WELCOME_MESSAGE = `Jay Swaminarayan, ${name}.
-Welcome to ${BOT_NAME}!
-
-Use the menu below to navigate the inventory system.`;
-
 export const UNAUTHORIZED_MESSAGE =
 	"You are not authorized to use this bot. Please contact a housekeeping admin if you believe this is an error.";
 

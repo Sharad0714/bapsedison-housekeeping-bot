@@ -87,6 +87,13 @@ async function sendWelcomeMessage (
 	);
 }
 
+export function getWelcomeMessage (user: AuthorizedUser): string {
+	return `Jay Swaminarayan, ${user.name}.
+Welcome to ${BOT_NAME}!
+
+Use the menu below to navigate the inventory system.`;
+}
+
 async function sendHelpMessage (
 	api: TelegramAPI,
 	chatId: number,
