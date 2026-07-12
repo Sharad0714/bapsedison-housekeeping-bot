@@ -37,7 +37,7 @@ export async function handleMessage (
 			return;
 
 		case "/orders":
-			if (user.role === "ADMIN") {
+			if (user.role === "ADMIN" || user.role === "DEVELOPER") {
 				await api.sendMessage(chatId, "📋 Orders coming soon.");
 			}
 			return;
@@ -66,6 +66,9 @@ function normalizeCommand (text: string): string {
 
 		case BUTTONS.MANAGE_ITEMS:
 			return "/manage";
+
+		case BUTTONS.ORDERS:
+			return "/orders";
 
 		case BUTTONS.HELP:
 			return "/help";
@@ -122,7 +125,7 @@ export function getHelpMessage (user: AuthorizedUser): string {
 		"Add, edit, or remove inventory items.",
 	];
 
-	if (user.role === "ADMIN") {
+	if (user.role === "ADMIN" || user.role === "DEVELOPER") {
 		sections.push(
 			"",
 			"📋 Orders",

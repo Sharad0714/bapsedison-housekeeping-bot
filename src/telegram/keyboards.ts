@@ -7,7 +7,7 @@ export function getMainMenuKeyboard (user: AuthorizedUser) {
 		[{text: BUTTONS.MANAGE_ITEMS}],
 	];
 
-	if (user.role === "ADMIN") {
+	if (user.role === "ADMIN" || user.role === "DEVELOPER") {
 		keyboard.push([{text: BUTTONS.ORDERS}]);
 	}
 

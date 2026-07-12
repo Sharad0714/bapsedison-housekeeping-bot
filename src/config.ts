@@ -17,7 +17,7 @@ export const CHAT_TYPES = {
 
 export type ChatType = typeof CHAT_TYPES[keyof typeof CHAT_TYPES];
 
-export type UserRole = "ADMIN" | "USER";
+export type UserRole = "ADMIN" | "DEVELOPER" | "USER";
 
 export interface AuthorizedUser {
 	readonly name: string;
