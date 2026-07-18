@@ -1,34 +1,66 @@
-getActiveWorkflow(env) {
-    const workflow = await repository.get(...);
+import type {Env} from "../index";
+import type {ActiveWorkflow} from "../models/activeWorkflow";
+import * as repository from "../db/activeWorkflowRepository";
 
-    if (workflow && isExpired(workflow)) {
-        await repository.delete(...);
+const WORKFLOW_TIMEOUT_MS = 30 * 60 * 1000;
+
+function isExpired (workflow: ActiveWorkflow): boolean {
+    return Date.now() - workflow.updatedAt > WORKFLOW_TIMEOUT_MS;
+}
+
+export async function getActiveWorkflow (
+    env: Env,
+): Promise<ActiveWorkflow | null> {
+    const workflow = await repository.getActiveWorkflow(env);
+
+    if (!workflow) {
+        return null;
+    }
+
+    if (isExpired(workflow)) {
+        await repository.deleteActiveWorkflow(env);
         return null;
     }
 
     return workflow;
 }
 
-startWorkflow(env, ...) {
-    const existing = await repository.get();
+export async function startWorkflow (
+    env: Env,
+    workflow: ActiveWorkflow,
+): Promise<boolean> {
+    const existing = await getActiveWorkflow(env);
 
     if (existing) {
-        throw ActiveWorkflowExistsError;
+        return false;
     }
 
-    await repository.create(...);
+    await repository.createActiveWorkflow(env, workflow);
+    return true;
 }
 
-updateWorkflow(env, ...) {
-    const workflow = await repository.get();
+export async function updateWorkflow (
+    env: Env,
+    workflow: ActiveWorkflow,
+): Promise<boolean> {
+    const existing = await getActiveWorkflow(env);
 
-    if (!workflow) {
-        throw WorkflowNotFoundError;
+    if (!existing) {
+        return false;
     }
 
-    await repository.update(...);
+    await repository.updateActiveWorkflow(env, workflow);
+    return true;
 }
 
-endWorkflow(env) {
-    await repository.delete(env);
+export async function endWorkflow (
+    env: Env,
+): Promise<void> {
+    await repository.deleteActiveWorkflow(env);
+}
+
+export async function touchWorkflow (
+    env: Env,
+): Promise<void> {
+    await repository.touchActiveWorkflow(env, Date.now());
 }

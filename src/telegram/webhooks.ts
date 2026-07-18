@@ -1,6 +1,7 @@
 import {Env} from "..";
 import {getAuthorizedUser} from "../auth/auth";
 import {routeUpdate} from "../services/router";
+import {logError} from "../utils/logger";
 import {TelegramAPI} from "./api";
 import {INTERNAL_ERROR_MESSAGE, UNAUTHORIZED_MESSAGE} from "./responses";
 import type {Update} from "./types";
@@ -48,7 +49,7 @@ export async function handleWebhook (
 	try {
 		await routeUpdate(env, api, update, user);
 	} catch (error) {
-		// log
+		logError(`Unhandled error while processing update for user ${user.telegramId}`, error);
 		await api.sendMessage(chatId, INTERNAL_ERROR_MESSAGE);
 	}
 
