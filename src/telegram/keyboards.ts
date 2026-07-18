@@ -1,6 +1,7 @@
 import {AuthorizedUser, BUTTONS} from "../config";
 import type {OrderWorkflowState} from "../models/orderWorkflow";
 import type {InventoryUpdateState} from "../models/inventoryUpdate";
+import type {ManageItemsState} from "../models/manageItems";
 import {ReplyKeyboardMarkup} from "./types";
 import type {InlineKeyboardMarkup} from "./types";
 
@@ -84,4 +85,68 @@ export function getOrdersNotificationKeyboard (): InlineKeyboardMarkup {
 			{text: "📋 Review Orders", callback_data: "orders:start"},
 		]],
 	};
+}
+
+export function getManageItemsMenuKeyboard (): ReplyKeyboardMarkup {
+	const keyboard: ReplyKeyboardMarkup["keyboard"] = [
+		[{text: BUTTONS.ADD_ITEM}],
+		[{text: BUTTONS.REMOVE_ITEMS}],
+		[{text: "❌ Cancel"}],
+	];
+
+	return {
+		keyboard,
+		resize_keyboard: true,
+		is_persistent: true,
+	};
+}
+
+export function getManageItemsCancelKeyboard (): ReplyKeyboardMarkup {
+	const keyboard: ReplyKeyboardMarkup["keyboard"] = [
+		[{text: "❌ Cancel"}],
+	];
+
+	return {
+		keyboard,
+		resize_keyboard: true,
+		is_persistent: true,
+	};
+}
+
+export function getManageItemsReviewKeyboard (): InlineKeyboardMarkup {
+	return {
+		inline_keyboard: [
+			[{text: "✅ Save", callback_data: "manage_items:add:save"}],
+			[
+				{text: "⬅️ Back", callback_data: "manage_items:add:back"},
+				{text: "❌ Cancel", callback_data: "manage_items:cancel"},
+			],
+		],
+	};
+}
+
+export function getRemoveItemsKeyboard (
+	state: ManageItemsState,
+): InlineKeyboardMarkup {
+	const items = state.removeItems ?? [];
+	const selectedNames = state.removeSelectedNames ?? [];
+
+	const keyboard: InlineKeyboardMarkup["inline_keyboard"] = items.map(
+		(item, index) => {
+			const selected = selectedNames.includes(item.name) ? "☑" : "☐";
+			return [{
+				text: `${selected} ${item.name} (${item.quantity})`,
+				callback_data: `manage_items:remove:toggle:${index}`,
+			}];
+		},
+	);
+
+	keyboard.push([
+		{text: "✅ Remove Selected", callback_data: "manage_items:remove:confirm"},
+	]);
+	keyboard.push([
+		{text: "❌ Cancel", callback_data: "manage_items:cancel"},
+	]);
+
+	return {inline_keyboard: keyboard};
 }

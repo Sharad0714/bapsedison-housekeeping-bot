@@ -18,8 +18,8 @@ The roadmap emphasizes delivering complete features rather than partially implem
 | Core Inventory         | ✅ Completed |
 | Inventory Workflow     | ✅ Completed |
 | Inventory Processing   | ✅ Completed |
-| Orders & Notifications | ⬜ Planned   |
-| Inventory Management   | ⬜ Planned   |
+| Orders & Notifications | ✅ Completed |
+| Inventory Management   | 🚧 In Progress |
 | Final Polish           | ⬜ Planned   |
 
 ---
@@ -114,7 +114,7 @@ Inventory updates are committed safely and low inventory is automatically detect
 
 ---
 
-# Phase 5 — Orders & Notifications
+# Phase 5 — Orders & Notifications ✅
 
 ## Goal
 

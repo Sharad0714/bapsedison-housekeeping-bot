@@ -5,6 +5,7 @@ import type {CallbackQuery} from "../telegram/types";
 import type {Env} from "..";
 import {handleOrderCallback} from "../workflows/orderWorkflow";
 import {handleInventoryUpdateCallback} from "../workflows/inventoryUpdateWorkflow";
+import {handleManageItemsCallback} from "../workflows/manageItemsWorkflow";
 
 export async function handleCallbackQuery (
 	env: Env,
@@ -24,17 +25,19 @@ export async function handleCallbackQuery (
 		return;
 	}
 
-	if (await handleOrderCallback(env, api, callbackQuery, _user)) {
+	if (await handleManageItemsCallback(env, api, callbackQuery, _user)) {
 		return;
 	}
 
+	if (await handleOrderCallback(env, api, callbackQuery, _user)) {
+		return;
+	}
 	const chatId = message.chat.id;
 	const messageId = message.message_id;
 
 	switch (data) {
 		case "inventory":
 		case "update_inventory":
-		case "manage_items":
 			await api.answerCallbackQuery(callbackId);
 			await api.editMessageText(
 				chatId,

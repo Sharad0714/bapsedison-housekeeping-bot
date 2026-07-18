@@ -11,6 +11,10 @@ import {
 	handleInventoryUpdateMessage,
 	startInventoryUpdateWorkflow,
 } from "../workflows/inventoryUpdateWorkflow";
+import {
+	handleManageItemsMessage,
+	startManageItemsWorkflow,
+} from "../workflows/manageItemsWorkflow";
 import {startOrdersWorkflow} from "../workflows/orderWorkflow";
 
 export async function handleMessage (
@@ -53,7 +57,11 @@ export async function handleMessage (
 			return;
 
 		case "/manage":
-			await api.sendMessage(chatId, "⚙️ Manage Items coming soon.");
+			if (message.from?.id === undefined) {
+				return;
+			}
+
+			await startManageItemsWorkflow(env, api, chatId, message.from.id, user);
 			return;
 
 		case "/orders":
@@ -70,6 +78,10 @@ export async function handleMessage (
 
 		default:
 			if (await handleInventoryUpdateMessage(env, api, message)) {
+				return;
+			}
+
+			if (await handleManageItemsMessage(env, api, message, user)) {
 				return;
 			}
 
