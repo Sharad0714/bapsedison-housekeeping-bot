@@ -1,13 +1,14 @@
 import {COMING_SOON_MESSAGE} from "../telegram/responses";
-import {TelegramAPI} from "../telegram/api";
+import type {TelegramClient} from "../telegram/api";
 import type {AuthorizedUser} from "../config";
-import {CallbackQuery} from "../telegram/types";
-import {Env} from "..";
+import type {CallbackQuery} from "../telegram/types";
+import type {Env} from "..";
+import {handleOrderCallback} from "../workflows/orderWorkflow";
 import {handleInventoryUpdateCallback} from "../workflows/inventoryUpdateWorkflow";
 
 export async function handleCallbackQuery (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	callbackQuery: CallbackQuery,
 	_user: AuthorizedUser
 ): Promise<void> {
@@ -20,6 +21,10 @@ export async function handleCallbackQuery (
 	}
 
 	if (await handleInventoryUpdateCallback(env, api, callbackQuery, _user)) {
+		return;
+	}
+
+	if (await handleOrderCallback(env, api, callbackQuery, _user)) {
 		return;
 	}
 

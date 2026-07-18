@@ -1,4 +1,5 @@
 import type {InventoryUpdateState} from "../models/inventoryUpdate";
+import type {InventoryItem} from "../models/inventory";
 
 export function formatInventoryUpdateScreen (
 	state: InventoryUpdateState,
@@ -59,7 +60,7 @@ function formatInventoryUpdateReview (
 
 export function formatInventoryUpdateCompleted (
 	changedItemCount: number,
-	newlyPendingItems: string[],
+	newlyPendingItems: InventoryItem[],
 ): string {
 	const lines = [
 		"✅ Inventory updated successfully.",
@@ -70,7 +71,7 @@ export function formatInventoryUpdateCompleted (
 		lines.push(
 			"",
 			"Items now requiring ordering:",
-			...newlyPendingItems.map((name) => `• ${name}`),
+			...newlyPendingItems.map((item) => `• ${item.name} (${item.quantity})`),
 		);
 	}
 

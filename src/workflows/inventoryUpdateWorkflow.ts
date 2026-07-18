@@ -14,15 +14,16 @@ import {
 	startWorkflow,
 	updateWorkflow,
 } from "../services/activeWorkflowService";
-import {TelegramAPI} from "../telegram/api";
+import type {TelegramClient} from "../telegram/api";
 import {getInventoryUpdateKeyboard, getMainMenuKeyboard} from "../telegram/keyboards";
 import {WORKFLOW_LOCKED_MESSAGE} from "../telegram/responses";
+import {notifyNewLowInventory} from "../services/notificationService";
 import type {CallbackQuery, Message} from "../telegram/types";
 import type {Env} from "../index";
 
 export async function startInventoryUpdateWorkflow (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	chatId: number,
 	userId: number,
 	user: AuthorizedUser,
@@ -86,7 +87,7 @@ export async function startInventoryUpdateWorkflow (
 
 export async function handleInventoryUpdateMessage (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	message: Message,
 ): Promise<boolean> {
 	const userId = message.from?.id;
@@ -150,7 +151,7 @@ export async function handleInventoryUpdateMessage (
 
 export async function handleInventoryUpdateCallback (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	callbackQuery: CallbackQuery,
 	user: AuthorizedUser,
 ): Promise<boolean> {
@@ -236,6 +237,7 @@ export async function handleInventoryUpdateCallback (
 			);
 
 			await endWorkflow(env);
+			await notifyNewLowInventory(api, result.newlyPendingItems);
 			await api.editMessageText(
 				message.chat.id,
 				message.message_id,
@@ -284,7 +286,7 @@ async function getOwnedInventoryUpdate (
 
 async function persistAndRender (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	workflow: ActiveWorkflow,
 	state: InventoryUpdateState,
 	errorMessage?: string,

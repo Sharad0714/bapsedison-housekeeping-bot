@@ -1,6 +1,6 @@
-import {BUTTONS, BOT_NAME} from "../config";
+import {BUTTONS, BOT_NAME, hasOrderAccess} from "../config";
 import type {AuthorizedUser} from "../config";
-import {TelegramAPI} from "../telegram/api";
+import type {TelegramClient} from "../telegram/api";
 import {getMainMenuKeyboard} from "../telegram/keyboards";
 import {Message} from "../telegram/types";
 import {UNKNOWN_COMMAND_MESSAGE} from "../telegram/responses";
@@ -11,10 +11,11 @@ import {
 	handleInventoryUpdateMessage,
 	startInventoryUpdateWorkflow,
 } from "../workflows/inventoryUpdateWorkflow";
+import {startOrdersWorkflow} from "../workflows/orderWorkflow";
 
 export async function handleMessage (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	message: Message,
 	user: AuthorizedUser
 ): Promise<void> {
@@ -56,9 +57,11 @@ export async function handleMessage (
 			return;
 
 		case "/orders":
-			if (user.role === "ADMIN" || user.role === "DEVELOPER") {
-				await api.sendMessage(chatId, "📋 Orders coming soon.");
+			if (message.from?.id === undefined) {
+				return;
 			}
+
+			await startOrdersWorkflow(env, api, chatId, message.from.id, user);
 			return;
 
 		case "/help":
@@ -102,7 +105,7 @@ function normalizeCommand (text: string): string {
 }
 
 async function sendWelcomeMessage (
-	api: TelegramAPI,
+	api: TelegramClient,
 	chatId: number,
 	user: AuthorizedUser
 ): Promise<void> {
@@ -121,7 +124,7 @@ Use the menu below to navigate the inventory system.`;
 }
 
 async function sendHelpMessage (
-	api: TelegramAPI,
+	api: TelegramClient,
 	chatId: number,
 	user: AuthorizedUser
 ): Promise<void> {
@@ -148,7 +151,7 @@ export function getHelpMessage (user: AuthorizedUser): string {
 		"Add, edit, or remove inventory items.",
 	];
 
-	if (user.role === "ADMIN" || user.role === "DEVELOPER") {
+	if (hasOrderAccess(user)) {
 		sections.push(
 			"",
 			"📋 Orders",

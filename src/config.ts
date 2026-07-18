@@ -43,7 +43,7 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	189953614: {
 		name: "Sharadbhai",
-		role: "ADMIN",
+		role: "DEVELOPER",
 	},
 	1100272978: {
 		name: "Smitbhai",
@@ -62,3 +62,18 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 export const LOW_STOCK_THRESHOLD = 5;
 
 export const SESSION_TIMEOUT = 15 * 60 * 1000;
+
+export type NotificationRecipientRole = "ADMIN" | "DEVELOPER";
+
+// Temporary test setting. Change to "ADMIN" when notification testing is complete.
+export const NOTIFICATION_RECIPIENT_ROLE: NotificationRecipientRole = "DEVELOPER";
+
+export function hasOrderAccess (user: AuthorizedUser): boolean {
+	return user.role === "ADMIN" || user.role === "DEVELOPER";
+}
+
+export function getNotificationRecipientIds (): number[] {
+	return Object.entries(AUTHORIZED_USERS)
+		.filter(([, user]) => user.role === NOTIFICATION_RECIPIENT_ROLE)
+		.map(([telegramId]) => Number(telegramId));
+}

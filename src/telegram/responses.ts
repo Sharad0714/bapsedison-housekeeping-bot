@@ -12,5 +12,8 @@ export const COMING_SOON_MESSAGE =
 export const WORKFLOW_LOCKED_MESSAGE =
 	"Another volunteer is currently editing inventory. Please try again shortly.";
 
+export const ORDERS_ADMIN_ONLY_MESSAGE =
+	"Orders are available only to an administrator.";
+
 export const INTERNAL_ERROR_MESSAGE =
 	"Something went wrong. Please try again later.";

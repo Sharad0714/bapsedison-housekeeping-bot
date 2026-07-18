@@ -1,14 +1,14 @@
-import {TelegramAPI} from "../telegram/api";
+import type {TelegramClient} from "../telegram/api";
 import {handleCallbackQuery} from "../handlers/callback";
 import {handleMessage} from "../handlers/message";
 import {logInfo} from "../utils/logger";
 import type {AuthorizedUser} from "../config";
-import {Update} from "../telegram/types";
-import {Env} from "..";
+import type {Update} from "../telegram/types";
+import type {Env} from "..";
 
 export async function routeUpdate (
 	env: Env,
-	api: TelegramAPI,
+	api: TelegramClient,
 	update: Update,
 	user: AuthorizedUser
 ): Promise<void> {

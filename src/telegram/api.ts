@@ -1,6 +1,26 @@
 import type {Message} from "./types";
 
-export class TelegramAPI {
+export interface TelegramClient {
+	sendMessage(
+		chatId: number,
+		text: string,
+		replyMarkup?: object,
+	): Promise<Message>;
+
+	editMessageText(
+		chatId: number,
+		messageId: number,
+		text: string,
+		replyMarkup?: object,
+	): Promise<void>;
+
+	answerCallbackQuery(
+		callbackQueryId: string,
+		text?: string,
+	): Promise<void>;
+}
+
+export class TelegramAPI implements TelegramClient {
 	constructor (private readonly token: string) { }
 
 	private get apiUrl (): string {

@@ -23,7 +23,7 @@ export async function getInventoryView (
 
 export interface InventorySaveResult {
 	changedItemCount: number;
-	newlyPendingItems: string[];
+	newlyPendingItems: InventoryItem[];
 }
 
 export async function saveInventoryUpdate (
@@ -59,11 +59,15 @@ export async function saveInventoryUpdate (
 				change.status === "PENDING" &&
 				items[index].status !== "PENDING"
 			)
-			.map((change) => change.name),
+			.map((change) => ({
+				name: change.name,
+				quantity: change.quantity,
+				status: change.status,
+			})),
 	};
 }
 
-function getStatusAfterUpdate (
+export function getStatusAfterUpdate (
 	currentStatus: InventoryStatus,
 	quantity: number,
 ): InventoryStatus {
