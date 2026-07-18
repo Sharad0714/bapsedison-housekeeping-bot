@@ -9,5 +9,8 @@ export const UNKNOWN_COMMAND_MESSAGE =
 export const COMING_SOON_MESSAGE =
 	"This feature is coming soon.";
 
+export const WORKFLOW_LOCKED_MESSAGE =
+	"Another volunteer is currently editing inventory. Please try again shortly.";
+
 export const INTERNAL_ERROR_MESSAGE =
 	"Something went wrong. Please try again later.";

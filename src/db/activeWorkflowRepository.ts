@@ -24,10 +24,10 @@ export async function getActiveWorkflow (
 export async function createActiveWorkflow (
 	env: Env,
 	workflow: ActiveWorkflow,
-): Promise<void> {
-	await env.DB
+): Promise<boolean> {
+	const result = await env.DB
 		.prepare(`
-			INSERT INTO active_workflow (
+			INSERT OR IGNORE INTO active_workflow (
 				id,
 				workflow,
 				user_id,
@@ -48,6 +48,8 @@ export async function createActiveWorkflow (
 			workflow.updatedAt,
 		)
 		.run();
+
+	return result.meta.changes === 1;
 }
 
 export async function updateActiveWorkflow (

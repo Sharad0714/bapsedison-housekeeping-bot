@@ -2,7 +2,7 @@
 
 A production-quality inventory management bot for the **BAPS Shri Swaminarayan Mandir, Edison Housekeeping Team**.
 
-The bot enables authorized volunteers to manage janitorial inventory entirely through Telegram. It provides guided inventory updates, low inventory detection, order management, and daily reminders through a simple, mobile-friendly interface.
+The bot enables authorized volunteers to manage janitorial inventory entirely through Telegram. The current implementation provides inventory viewing, guided inventory updates, low-inventory status detection, and a global editing lock through a simple, mobile-friendly interface. Order management, reminders, and item administration remain on the roadmap.
 
 The project is designed for a small team of trusted users and emphasizes simplicity, reliability, and long-term maintainability.
 
@@ -14,12 +14,12 @@ The project is designed for a small team of trusted users and emphasizes simplic
 * Secure authentication using Telegram User IDs
 * Inventory viewing
 * Guided inventory update workflow
-* Add and remove inventory items
-* Global editing lock
-* Automatic low inventory detection
-* Administrator order management
-* Daily reminder notifications
+* Global editing lock with session timeout
+* Atomic D1-backed inventory saves
+* Automatic low-inventory status detection
 * Fully serverless architecture
+
+Planned workflows include item administration, administrator order management, and daily reminder notifications.
 
 ---
 

@@ -49,7 +49,7 @@ export async function handleWebhook (
 	try {
 		await routeUpdate(env, api, update, user);
 	} catch (error) {
-		logError(`Unhandled error while processing update for user ${user.telegramId}`, error);
+		logError(`Unhandled error while processing update for user ${telegramUser.id}`, error);
 		await api.sendMessage(chatId, INTERNAL_ERROR_MESSAGE);
 	}
 

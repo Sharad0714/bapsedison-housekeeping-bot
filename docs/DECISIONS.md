@@ -198,7 +198,7 @@ This guarantees that inventory is always internally consistent.
 
 ## Decision
 
-Use the `active_session` table for both session locking and temporary workflow state.
+Use the `active_workflow` table for both session locking and temporary workflow state.
 
 ## Alternatives Considered
 
@@ -229,7 +229,7 @@ Use only three database tables.
 
 * inventory
 * metadata
-* active_session
+* active_workflow
 
 ## Alternatives Considered
 

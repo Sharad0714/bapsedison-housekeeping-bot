@@ -7,6 +7,10 @@ import {UNKNOWN_COMMAND_MESSAGE} from "../telegram/responses";
 import {Env} from "..";
 import {getInventoryView} from "../services/inventoryService";
 import {formatInventory} from "../formatters/inventoryFormatter";
+import {
+	handleInventoryUpdateMessage,
+	startInventoryUpdateWorkflow,
+} from "../workflows/inventoryUpdateWorkflow";
 
 export async function handleMessage (
 	env: Env,
@@ -34,7 +38,17 @@ export async function handleMessage (
 			return;
 
 		case "/update":
-			await api.sendMessage(chatId, "📝 Update Inventory coming soon.");
+			if (message.from?.id === undefined) {
+				return;
+			}
+
+			await startInventoryUpdateWorkflow(
+				env,
+				api,
+				chatId,
+				message.from.id,
+				user,
+			);
 			return;
 
 		case "/manage":
@@ -52,6 +66,10 @@ export async function handleMessage (
 			return;
 
 		default:
+			if (await handleInventoryUpdateMessage(env, api, message)) {
+				return;
+			}
+
 			await api.sendMessage(
 				chatId,
 				UNKNOWN_COMMAND_MESSAGE,

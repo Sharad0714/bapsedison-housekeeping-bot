@@ -3,6 +3,7 @@ import {TelegramAPI} from "../telegram/api";
 import type {AuthorizedUser} from "../config";
 import {CallbackQuery} from "../telegram/types";
 import {Env} from "..";
+import {handleInventoryUpdateCallback} from "../workflows/inventoryUpdateWorkflow";
 
 export async function handleCallbackQuery (
 	env: Env,
@@ -15,6 +16,10 @@ export async function handleCallbackQuery (
 	const message = callbackQuery.message;
 
 	if (!message || !data) {
+		return;
+	}
+
+	if (await handleInventoryUpdateCallback(env, api, callbackQuery, _user)) {
 		return;
 	}
 

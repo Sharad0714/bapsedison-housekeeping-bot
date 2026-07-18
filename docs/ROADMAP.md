@@ -15,9 +15,9 @@ The roadmap emphasizes delivering complete features rather than partially implem
 | Phase                  | Status      |
 | ---------------------- | ----------- |
 | Foundation             | ✅ Completed |
-| Core Inventory         | ⬜ Planned   |
-| Inventory Workflow     | ⬜ Planned   |
-| Inventory Processing   | ⬜ Planned   |
+| Core Inventory         | ✅ Completed |
+| Inventory Workflow     | ✅ Completed |
+| Inventory Processing   | ✅ Completed |
 | Orders & Notifications | ⬜ Planned   |
 | Inventory Management   | ⬜ Planned   |
 | Final Polish           | ⬜ Planned   |

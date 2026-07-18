@@ -43,7 +43,7 @@ metadata
     │
     ├── Stores information about the last completed inventory update
     │
-active_session
+active_workflow
     │
     └── Stores the active editing workflow
 ```
@@ -65,8 +65,8 @@ Schema:
 ```sql id="e5lmb2"
 CREATE TABLE inventory (
     name TEXT PRIMARY KEY,
-    quantity INTEGER NOT NULL,
-    status TEXT NOT NULL
+    quantity INTEGER NOT NULL CHECK (quantity >= 0),
+    status TEXT NOT NULL DEFAULT 'NONE'
         CHECK(status IN ('NONE', 'PENDING', 'ORDERED'))
 );
 ```
@@ -158,19 +158,21 @@ It is never modified during partially completed workflows.
 
 ---
 
-# Active Session Table
+# Active Workflow Table
 
-The active session table stores the application's only editing session.
+The active workflow table stores the application's only editing session and its temporary state.
 
 Schema:
 
 ```sql id="nclvsa"
-CREATE TABLE active_session (
+CREATE TABLE active_workflow (
     id INTEGER PRIMARY KEY CHECK(id = 1),
-    telegram_id INTEGER NOT NULL,
     workflow TEXT NOT NULL,
-    state_json TEXT NOT NULL,
-    updated_at TEXT NOT NULL
+    user_id INTEGER NOT NULL,
+    state TEXT NOT NULL,
+    data TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
 );
 ```
 

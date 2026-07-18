@@ -6,7 +6,7 @@ This document defines the application's interactive workflows.
 
 Each workflow represents a guided user interaction that may span multiple Telegram messages or callback actions.
 
-Workflows are implemented as state machines and store temporary state in the `active_session` table until they complete or are cancelled.
+Workflows are implemented as state machines and store temporary state in the `active_workflow` table until they complete or are cancelled.
 
 Only one editing workflow may be active at any time.
 

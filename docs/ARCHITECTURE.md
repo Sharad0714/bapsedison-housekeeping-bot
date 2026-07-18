@@ -257,7 +257,7 @@ The application uses only three tables:
 
 * inventory
 * metadata
-* active_session
+* active_workflow
 
 Each table has a single, well-defined responsibility.
 
@@ -267,7 +267,7 @@ Each table has a single, well-defined responsibility.
 
 The application allows only one active editing workflow at a time.
 
-The `active_session` table serves two purposes:
+The `active_workflow` table serves two purposes:
 
 * Global editing lock
 * Temporary workflow state

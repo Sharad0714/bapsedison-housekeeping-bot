@@ -1,5 +1,7 @@
 import {AuthorizedUser, BUTTONS} from "../config";
+import type {InventoryUpdateState} from "../models/inventoryUpdate";
 import {ReplyKeyboardMarkup} from "./types";
+import type {InlineKeyboardMarkup} from "./types";
 
 export function getMainMenuKeyboard (user: AuthorizedUser) {
 	const keyboard: ReplyKeyboardMarkup["keyboard"] = [
@@ -19,4 +21,34 @@ export function getMainMenuKeyboard (user: AuthorizedUser) {
 		resize_keyboard: true,
 		is_persistent: true,
 	};
+}
+
+export function getInventoryUpdateKeyboard (
+	state: InventoryUpdateState,
+): InlineKeyboardMarkup {
+	if (state.state === "REVIEW") {
+		return {
+			inline_keyboard: [
+				[{text: "✅ Save", callback_data: "inventory_update:save"}],
+				[
+					{text: "⬅️ Back", callback_data: "inventory_update:back"},
+					{text: "❌ Cancel", callback_data: "inventory_update:cancel"},
+				],
+			],
+		};
+	}
+
+	const navigation: InlineKeyboardMarkup["inline_keyboard"] = [];
+
+	if (state.currentIndex > 0) {
+		navigation.push([
+			{text: "⬅️ Back", callback_data: "inventory_update:back"},
+		]);
+	}
+
+	navigation.push([
+		{text: "❌ Cancel", callback_data: "inventory_update:cancel"},
+	]);
+
+	return {inline_keyboard: navigation};
 }

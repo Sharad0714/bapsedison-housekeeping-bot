@@ -1,11 +1,10 @@
 import type {Env} from "../index";
+import {SESSION_TIMEOUT} from "../config";
 import type {ActiveWorkflow} from "../models/activeWorkflow";
 import * as repository from "../db/activeWorkflowRepository";
 
-const WORKFLOW_TIMEOUT_MS = 30 * 60 * 1000;
-
 function isExpired (workflow: ActiveWorkflow): boolean {
-    return Date.now() - workflow.updatedAt > WORKFLOW_TIMEOUT_MS;
+	return Date.now() - workflow.updatedAt > SESSION_TIMEOUT;
 }
 
 export async function getActiveWorkflow (
@@ -35,8 +34,7 @@ export async function startWorkflow (
         return false;
     }
 
-    await repository.createActiveWorkflow(env, workflow);
-    return true;
+	return repository.createActiveWorkflow(env, workflow);
 }
 
 export async function updateWorkflow (

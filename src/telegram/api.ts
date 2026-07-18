@@ -1,3 +1,5 @@
+import type {Message} from "./types";
+
 export class TelegramAPI {
 	constructor (private readonly token: string) { }
 
@@ -40,8 +42,8 @@ export class TelegramAPI {
 		chatId: number,
 		text: string,
 		replyMarkup?: object
-	): Promise<void> {
-		await this.request("sendMessage", {
+	): Promise<Message> {
+		return this.request<Message>("sendMessage", {
 			chat_id: chatId,
 			text,
 			reply_markup: replyMarkup,
