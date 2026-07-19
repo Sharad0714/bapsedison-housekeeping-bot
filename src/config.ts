@@ -33,7 +33,7 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	478019899: {
 		name: "Akashbhai",
-		role: "USER",
+		role: "ADMIN",
 	},
 	713070311: {
 		name: "Hiralbhai",
