@@ -138,7 +138,7 @@ describe("User Roles and Access Controls", () => {
 		expect(hasOrderAccess(adminUser)).toBe(true);
 		expect(hasManageAccess(adminUser)).toBe(true);
 
-		const regularUser = AUTHORIZED_USERS[478019899]; // Akashbhai
+		const regularUser = AUTHORIZED_USERS[713070311]; // Hiralbhai
 		expect(regularUser.role).toBe("USER");
 		expect(hasOrderAccess(regularUser)).toBe(false);
 		expect(hasManageAccess(regularUser)).toBe(false);
@@ -155,9 +155,9 @@ describe("User Roles and Access Controls", () => {
 
 	it("blocks non-admin users from starting manage items workflow", async () => {
 		const api = new MockTelegramClient();
-		const regularUser = AUTHORIZED_USERS[478019899];
+		const regularUser = AUTHORIZED_USERS[713070311];
 
-		await startManageItemsWorkflow({DB: env.DB} as any, api, 12345, 478019899, regularUser);
+		await startManageItemsWorkflow({DB: env.DB} as any, api, 12345, 713070311, regularUser);
 
 		expect(api.sentMessages.length).toBe(1);
 		expect(api.sentMessages[0].text).toContain("Managing items is available only to an administrator");
