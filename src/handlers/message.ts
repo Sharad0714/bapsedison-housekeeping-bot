@@ -1,4 +1,4 @@
-import {BUTTONS, BOT_NAME, hasOrderAccess} from "../config";
+import {BUTTONS, BOT_NAME, hasOrderAccess, hasManageAccess} from "../config";
 import type {AuthorizedUser} from "../config";
 import type {TelegramClient} from "../telegram/api";
 import {getMainMenuKeyboard} from "../telegram/keyboards";
@@ -158,10 +158,15 @@ export function getHelpMessage (user: AuthorizedUser): string {
 		"",
 		"📝 Update Inventory",
 		"Record inventory changes.",
-		"",
-		"⚙️ Manage Items",
-		"Add, edit, or remove inventory items.",
 	];
+
+	if (hasManageAccess(user)) {
+		sections.push(
+			"",
+			"⚙️ Manage Items",
+			"Add, edit, or remove inventory items."
+		);
+	}
 
 	if (hasOrderAccess(user)) {
 		sections.push(

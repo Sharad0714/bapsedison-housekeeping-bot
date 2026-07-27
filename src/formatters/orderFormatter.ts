@@ -55,3 +55,33 @@ export function formatDailyOrderReminder (
 		"Please review and update the order status when ready.",
 	].join("\n");
 }
+
+export function formatInventoryUpdateReminder (
+	lastUpdated: string | null,
+	updatedBy: string | null,
+): string {
+	let lastUpdatedText = "Never";
+	if (lastUpdated) {
+		const date = new Date(lastUpdated);
+		if (!Number.isNaN(date.getTime())) {
+			const formattedDate = date.toLocaleDateString("en-US", {
+				month: "short",
+				day: "numeric",
+				year: "numeric",
+				hour: "numeric",
+				minute: "2-digit",
+				timeZone: "America/New_York",
+			});
+			lastUpdatedText = updatedBy ? `${formattedDate} by ${updatedBy}` : formattedDate;
+		}
+	}
+
+	return [
+		"📝 Inventory Update Reminder",
+		"",
+		"The inventory has not been updated recently.",
+		`Last updated: ${lastUpdatedText}`,
+		"",
+		"Please update the inventory at your earliest convenience.",
+	].join("\n");
+}

@@ -1,4 +1,4 @@
-import {AuthorizedUser, BUTTONS} from "../config";
+import {AuthorizedUser, BUTTONS, hasManageAccess, hasOrderAccess} from "../config";
 import type {OrderWorkflowState} from "../models/orderWorkflow";
 import type {InventoryUpdateState} from "../models/inventoryUpdate";
 import type {ManageItemsState} from "../models/manageItems";
@@ -9,10 +9,13 @@ export function getMainMenuKeyboard (user: AuthorizedUser) {
 	const keyboard: ReplyKeyboardMarkup["keyboard"] = [
 		[{text: BUTTONS.INVENTORY}],
 		[{text: BUTTONS.UPDATE_INVENTORY}],
-		[{text: BUTTONS.MANAGE_ITEMS}],
 	];
 
-	if (user.role === "ADMIN" || user.role === "DEVELOPER") {
+	if (hasManageAccess(user)) {
+		keyboard.push([{text: BUTTONS.MANAGE_ITEMS}]);
+	}
+
+	if (hasOrderAccess(user)) {
 		keyboard.push([{text: BUTTONS.ORDERS}]);
 	}
 

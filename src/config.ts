@@ -19,7 +19,7 @@ export const CHAT_TYPES = {
 
 export type ChatType = typeof CHAT_TYPES[keyof typeof CHAT_TYPES];
 
-export type UserRole = "ADMIN" | "DEVELOPER" | "USER";
+export type UserRole = "ADMIN" | "USER";
 
 export interface AuthorizedUser {
 	readonly name: string;
@@ -45,7 +45,7 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	189953614: {
 		name: "Sharadbhai",
-		role: "DEVELOPER",
+		role: "ADMIN",
 	},
 	1100272978: {
 		name: "Smitbhai",
@@ -58,24 +58,29 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	507718756: {
 		name: "Vipulbhai",
 		role: "USER",
-	}
+	},
 } as const satisfies Record<number, AuthorizedUser>;
 
 export const LOW_STOCK_THRESHOLD = 5;
 
 export const SESSION_TIMEOUT = 15 * 60 * 1000;
 
-export type NotificationRecipientRole = "ADMIN" | "DEVELOPER";
-
-// Temporary test setting. Change to "ADMIN" when notification testing is complete.
-export const NOTIFICATION_RECIPIENT_ROLE: NotificationRecipientRole = "DEVELOPER";
+export const NOTIFICATION_RECIPIENT_ROLE: UserRole = "ADMIN";
 
 export function hasOrderAccess (user: AuthorizedUser): boolean {
-	return user.role === "ADMIN" || user.role === "DEVELOPER";
+	return user.role === "ADMIN";
+}
+
+export function hasManageAccess (user: AuthorizedUser): boolean {
+	return user.role === "ADMIN";
 }
 
 export function getNotificationRecipientIds (): number[] {
 	return Object.entries(AUTHORIZED_USERS)
 		.filter(([, user]) => user.role === NOTIFICATION_RECIPIENT_ROLE)
 		.map(([telegramId]) => Number(telegramId));
+}
+
+export function getAllAuthorizedUserIds (): number[] {
+	return Object.keys(AUTHORIZED_USERS).map((telegramId) => Number(telegramId));
 }

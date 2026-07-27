@@ -1,4 +1,4 @@
-import type {AuthorizedUser} from "../config";
+import {hasManageAccess, type AuthorizedUser} from "../config";
 import {
 	addInventoryItem,
 	deleteInventoryItems,
@@ -35,7 +35,7 @@ import {
 	getMainMenuKeyboard,
 	getRemoveItemsKeyboard,
 } from "../telegram/keyboards";
-import {WORKFLOW_LOCKED_MESSAGE} from "../telegram/responses";
+import {MANAGE_ADMIN_ONLY_MESSAGE, WORKFLOW_LOCKED_MESSAGE} from "../telegram/responses";
 import type {CallbackQuery, Message} from "../telegram/types";
 import type {Env} from "../index";
 
@@ -46,6 +46,11 @@ export async function startManageItemsWorkflow (
 	userId: number,
 	user: AuthorizedUser,
 ): Promise<void> {
+	if (!hasManageAccess(user)) {
+		await api.sendMessage(chatId, MANAGE_ADMIN_ONLY_MESSAGE, getMainMenuKeyboard(user));
+		return;
+	}
+
 	if (await getActiveWorkflow(env)) {
 		await api.sendMessage(chatId, WORKFLOW_LOCKED_MESSAGE, getMainMenuKeyboard(user));
 		return;

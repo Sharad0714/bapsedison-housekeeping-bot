@@ -15,5 +15,8 @@ export const WORKFLOW_LOCKED_MESSAGE =
 export const ORDERS_ADMIN_ONLY_MESSAGE =
 	"Orders are available only to an administrator.";
 
+export const MANAGE_ADMIN_ONLY_MESSAGE =
+	"Managing items is available only to an administrator.";
+
 export const INTERNAL_ERROR_MESSAGE =
 	"Something went wrong. Please try again later.";

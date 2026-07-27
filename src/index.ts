@@ -1,6 +1,14 @@
 import {TelegramAPI} from "./telegram/api";
 import {handleWebhook} from "./telegram/webhooks";
-import {sendPendingOrderReminder} from "./services/notificationService";
+import {
+	sendInventoryUpdateReminder,
+	sendPendingOrderReminder,
+} from "./services/notificationService";
+import {
+	isInventoryReminderTime,
+	isOrderReminderTime,
+	toEasternTime,
+} from "./utils/dateUtils";
 import {logError} from "./utils/logger";
 
 export interface Env {
@@ -22,7 +30,7 @@ export default {
 	},
 
 	async scheduled (
-		_controller: ScheduledController,
+		controller: ScheduledController,
 		env: Env,
 		_context: ExecutionContext,
 	): Promise<void> {
@@ -31,13 +39,26 @@ export default {
 			return;
 		}
 
-		try {
-			await sendPendingOrderReminder(
-				env,
-				new TelegramAPI(env.TELEGRAM_BOT_TOKEN),
-			);
-		} catch (error) {
-			logError("Failed to send scheduled pending-order reminder.", error);
+		const telegram = new TelegramAPI(env.TELEGRAM_BOT_TOKEN);
+		const scheduledDate = new Date(controller.scheduledTime);
+		const et = toEasternTime(scheduledDate);
+
+		// 8:00 AM ET daily pending order reminder
+		if (isOrderReminderTime(et)) {
+			try {
+				await sendPendingOrderReminder(env, telegram);
+			} catch (error) {
+				logError("Failed to send scheduled pending-order reminder.", error);
+			}
+		}
+
+		// Inventory update reminder (Sat/Sun 12:00 PM / 7:30 PM, Mon-Fri 8:00 AM)
+		if (isInventoryReminderTime(et)) {
+			try {
+				await sendInventoryUpdateReminder(env, telegram, scheduledDate);
+			} catch (error) {
+				logError("Failed to send scheduled inventory-update reminder.", error);
+			}
 		}
 	},
 } satisfies ExportedHandler<Env>;

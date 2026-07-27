@@ -2,6 +2,7 @@
 	"name": "bapsedison-housekeeping-bot",
 	"version": "0.1.0",
 	"private": true,
+	"type": "module",
 	"description": "Telegram inventory management bot for the BAPS Edison Housekeeping Team",
 	"scripts": {
 		"dev": "wrangler dev",

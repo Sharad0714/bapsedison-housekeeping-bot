@@ -1,12 +1,15 @@
-import {getNotificationRecipientIds} from "../config";
+import {getAllAuthorizedUserIds, getNotificationRecipientIds} from "../config";
+import {getInventoryMetadata} from "../db/metadataRepository";
 import {getPendingOrders} from "../db/orderRepository";
 import {
 	formatDailyOrderReminder,
+	formatInventoryUpdateReminder,
 	formatLowInventoryNotification,
 } from "../formatters/orderFormatter";
 import type {InventoryItem} from "../models/inventory";
 import {getOrdersNotificationKeyboard} from "../telegram/keyboards";
 import type {TelegramClient} from "../telegram/api";
+import {getInventoryReminderLevel, toEasternTime} from "../utils/dateUtils";
 import {logError, logWarn} from "../utils/logger";
 import type {Env} from "../index";
 
@@ -46,6 +49,35 @@ export async function sendPendingOrderReminder (
 		formatDailyOrderReminder(items),
 		getOrdersNotificationKeyboard(),
 	);
+}
+
+export async function sendInventoryUpdateReminder (
+	env: Env,
+	api: TelegramClient,
+	now: Date = new Date(),
+): Promise<NotificationDeliveryResult> {
+	const metadata = await getInventoryMetadata(env);
+	const lastUpdated = metadata?.lastUpdated ?? null;
+	const updatedBy = metadata?.updatedBy ?? null;
+
+	const level = getInventoryReminderLevel(lastUpdated, now);
+
+	if (level === "none") {
+		return emptyDeliveryResult();
+	}
+
+	const et = toEasternTime(now);
+	const isWeekday = et.dayOfWeek >= 1 && et.dayOfWeek <= 5;
+
+	// On weekdays, only send if escalation level is 'escalated' (2+ missed weekends)
+	if (isWeekday && level !== "escalated") {
+		return emptyDeliveryResult();
+	}
+
+	const text = formatInventoryUpdateReminder(lastUpdated, updatedBy);
+	const recipientIds = getAllAuthorizedUserIds();
+
+	return deliverNotificationToRecipients(api, recipientIds, text);
 }
 
 export async function deliverNotification (
