@@ -31,6 +31,10 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 		name: "Abhishekbhai",
 		role: "ADMIN",
 	},
+	7802558758: {
+		name: "Achalswarup Swami",
+		role: "ADMIN",
+	},
 	478019899: {
 		name: "Akashbhai",
 		role: "ADMIN",
@@ -41,7 +45,7 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	345966894: {
 		name: "Rajbhai",
-		role: "USER",
+		role: "ADMIN",
 	},
 	189953614: {
 		name: "Sharadbhai",
@@ -53,10 +57,6 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	414307985: {
 		name: "Vasavbhai",
-		role: "USER",
-	},
-	507718756: {
-		name: "Vipulbhai",
 		role: "USER",
 	},
 } as const satisfies Record<number, AuthorizedUser>;
