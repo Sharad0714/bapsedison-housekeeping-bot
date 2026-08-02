@@ -1,4 +1,8 @@
-import {getAllAuthorizedUserIds, getNotificationRecipientIds} from "../config";
+import {
+	getAllAuthorizedUserIds,
+	getInventoryReminderRecipientIds,
+	getNotificationRecipientIds,
+} from "../config";
 import {getInventoryMetadata} from "../db/metadataRepository";
 import {getPendingOrders} from "../db/orderRepository";
 import {
@@ -75,7 +79,7 @@ export async function sendInventoryUpdateReminder (
 	}
 
 	const text = formatInventoryUpdateReminder(lastUpdated, updatedBy);
-	const recipientIds = getAllAuthorizedUserIds();
+	const recipientIds = getInventoryReminderRecipientIds();
 
 	return deliverNotificationToRecipients(api, recipientIds, text);
 }

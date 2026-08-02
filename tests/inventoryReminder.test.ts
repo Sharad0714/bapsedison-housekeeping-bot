@@ -3,6 +3,7 @@ import {describe, expect, it} from "vitest";
 import {
 	AUTHORIZED_USERS,
 	getAllAuthorizedUserIds,
+	getInventoryReminderRecipientIds,
 	getNotificationRecipientIds,
 	hasManageAccess,
 	hasOrderAccess,
@@ -188,7 +189,7 @@ describe("Inventory Reminder Service Integration", () => {
 		expect(api.sentMessages.length).toBe(0);
 	});
 
-	it("delivers reminder to all authorized users when 1 missed weekend occurs", async () => {
+	it("delivers reminder to group chat when 1 missed weekend occurs", async () => {
 		const api = new MockTelegramClient();
 
 		// Save an update from 2 weeks ago relative to Sat Jul 25 2026
@@ -207,9 +208,10 @@ describe("Inventory Reminder Service Integration", () => {
 			satJul25NoonET,
 		);
 
-		const allUserIds = getAllAuthorizedUserIds();
-		expect(result.deliveredRecipientIds.length).toBe(allUserIds.length);
-		expect(api.sentMessages.length).toBe(allUserIds.length);
+		const groupRecipientIds = getInventoryReminderRecipientIds();
+		expect(result.deliveredRecipientIds).toEqual([-1001585472452]);
+		expect(api.sentMessages.length).toBe(1);
+		expect(api.sentMessages[0].chatId).toBe(-1001585472452);
 		expect(api.sentMessages[0].text).toContain("Inventory Update Reminder");
 	});
 

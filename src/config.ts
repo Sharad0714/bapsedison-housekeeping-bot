@@ -33,11 +33,11 @@ export const AUTHORIZED_USERS: Record<number, AuthorizedUser> = {
 	},
 	7802558758: {
 		name: "Achalswarup Swami",
-		role: "ADMIN",
+		role: "USER",
 	},
 	478019899: {
 		name: "Akashbhai",
-		role: "ADMIN",
+		role: "USER",
 	},
 	713070311: {
 		name: "Hiralbhai",
@@ -83,4 +83,10 @@ export function getNotificationRecipientIds (): number[] {
 
 export function getAllAuthorizedUserIds (): number[] {
 	return Object.keys(AUTHORIZED_USERS).map((telegramId) => Number(telegramId));
+}
+
+export const INVENTORY_REMINDER_CHAT_ID = -1001585472452;
+
+export function getInventoryReminderRecipientIds (): number[] {
+	return [INVENTORY_REMINDER_CHAT_ID];
 }
