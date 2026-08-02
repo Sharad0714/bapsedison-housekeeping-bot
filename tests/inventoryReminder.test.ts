@@ -16,6 +16,7 @@ import {
 } from "../src/services/notificationService";
 import type {TelegramClient} from "../src/telegram/api";
 import type {Message} from "../src/telegram/types";
+import {handleWebhook} from "../src/telegram/webhooks";
 import {
 	getCutoffTimestamps,
 	getInventoryReminderLevel,
@@ -219,5 +220,30 @@ describe("Inventory Reminder Service Integration", () => {
 		const message = formatInventoryUpdateReminder(null, null);
 		expect(message).toContain("Inventory Update Reminder");
 		expect(message).toContain("Last updated: Never");
+	});
+
+	it("silently ignores incoming updates from group chats in handleWebhook", async () => {
+		const api = new MockTelegramClient();
+		const groupUpdate = {
+			update_id: 999,
+			message: {
+				message_id: 1,
+				date: Math.floor(Date.now() / 1000),
+				chat: {id: -1001585472452, type: "supergroup"},
+				from: {id: 189953614, is_bot: false, first_name: "Sharadbhai"},
+				text: "/inventory",
+			},
+		};
+
+		const request = new Request("https://worker.dev/", {
+			method: "POST",
+			headers: {"Content-Type": "application/json"},
+			body: JSON.stringify(groupUpdate),
+		});
+
+		const response = await handleWebhook(request, api as any, {DB: env.DB} as any);
+
+		expect(response.status).toBe(200);
+		expect(api.sentMessages.length).toBe(0);
 	});
 });

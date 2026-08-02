@@ -1,5 +1,6 @@
 import {Env} from "..";
 import {getAuthorizedUser} from "../auth/auth";
+import {CHAT_TYPES} from "../config";
 import {routeUpdate} from "../services/router";
 import {logError} from "../utils/logger";
 import {TelegramAPI} from "./api";
@@ -35,7 +36,17 @@ export async function handleWebhook (
 		update.message?.chat.id ??
 		update.callback_query?.message?.chat.id;
 
+	const chatType =
+		update.message?.chat.type ??
+		update.callback_query?.message?.chat.type;
+
 	if (!telegramUser || !chatId) {
+		return new Response("OK");
+	}
+
+	// Ignore updates from non-private chats (groups, supergroups, channels).
+	// Bot commands can only be invoked in 1-on-1 private DMs with the bot.
+	if (chatType !== CHAT_TYPES.PRIVATE) {
 		return new Response("OK");
 	}
 
